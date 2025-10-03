@@ -6,7 +6,7 @@ https://github.com/mealie-recipes/mealie
 
 ## Installing the chart
 ```console
-helm repo add mealie https://jvalskis.github.io/mealie-helm/
+helm repo add mealie https://chadhutchins182.github.io/mealie-helm/
 helm repo update
 helm install mealie mealie/mealie
 ```
