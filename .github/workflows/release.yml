@@ -8,13 +8,8 @@ on:
 
 jobs:
   release:
-    # depending on default permission settings for your org (contents being read-only or read-write for workloads), you will have to add permissions
-    # see: https://docs.github.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token
     permissions:
       contents: write
-      pages: write
-      id-token: write
-      
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -29,16 +24,17 @@ jobs:
 
       - name: Install Helm
         uses: azure/setup-helm@v4
+        with:
+          version: v3.14.0
 
-      - name: Add repos
+      - name: Add dependency chart repos
         run: |
+          helm repo add bjw-s-labs https://bjw-s-labs.github.io/helm-charts/
           helm repo add bitnami https://charts.bitnami.com/bitnami
-          helm repo add bjw https://bjw-s.github.io/helm-charts/
 
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.7.0
+        uses: helm/chart-releaser-action@v1.6.0
         with:
           skip_existing: true
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          CR_RELEASE_NAME_TEMPLATE: "{{ .Name }}-chart-{{ .Version }}"
